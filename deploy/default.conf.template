@@ -1,4 +1,5 @@
 perl_modules perl/lib;
+perl_modules /usr/lib/perl5/vendor_perl/x86_64-linux-thread-multi;
 perl_require refresher_nginx.pm;
 
 server {
