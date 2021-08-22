@@ -17,6 +17,7 @@ sub handler {
     die "gitea_webhook_secret nginx var not set!" if $request->variable('gitea_webhook_secret') eq '';
 
     if ($request->has_request_body(\&handle_post)) {
+        $request->send_http_header;
         return OK;
     }
 
