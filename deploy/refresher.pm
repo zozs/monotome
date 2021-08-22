@@ -24,8 +24,8 @@ sub git_repo_initial_clone {
     system('git', 'clone', $remote, $wiki_repo, '--config', "core.sshCommand=$ssh_command", '--config', 'ssh.variant=ssh');
 
     chdir($wiki_repo);
-    system('ln', '-s', '/monotome/monotome');
-    system('ln', '-s', '/monotome/index.html');
+    system('ln', '-sTf', '/monotome/monotome');
+    system('ln', '-sTf', '/monotome/index.html');
 }
 
 sub update_index_json {

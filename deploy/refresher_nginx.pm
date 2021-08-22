@@ -31,7 +31,7 @@ sub handle_post {
     my $header_hmac = $request->header_in('X-Gitea-Signature');
     refresher::verify_request($key, $payload, $header_hmac);
 
-    my $wiki_repo = request->variable('wiki_repo');
+    my $wiki_repo = $request->variable('wiki_repo');
     my $remote = $request->variable('wiki_repo_remote');
     my $ssh_key = $request->variable('wiki_ssh_key');
     refresher::git_repo_update($wiki_repo, $remote, $ssh_key);
