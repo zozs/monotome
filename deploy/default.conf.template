@@ -1,0 +1,24 @@
+perl_modules perl/lib;
+perl_require refresher_nginx.pm;
+
+server {
+    listen       80;
+    server_name  localhost;
+
+    auth_basic           "zozs's wiki";
+    auth_basic_user_file ${NGINX_HTPASSWD};
+
+    location / {
+        root   ${WIKI_REPO};
+        index  index.html;
+    }
+
+    location /refresh {
+        auth_basic off;
+        set $wiki_repo ${WIKI_REPO};
+        set $wiki_repo_remote ${WIKI_REPO_REMOTE};
+        set $wiki_ssh_key ${WIKI_SSH_KEY};
+        set $gitea_webhook_secret ${GITEA_WEBHOOK_SECRET};
+        perl refresher_nginx::handler;
+    }
+}
