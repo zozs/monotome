@@ -8,9 +8,9 @@ server {
 
     auth_basic           "zozs's wiki";
     auth_basic_user_file ${NGINX_HTPASSWD};
+    root                 ${WIKI_REPO};
 
     location / {
-        root   ${WIKI_REPO};
         index  index.html;
     }
 
@@ -21,5 +21,12 @@ server {
         set $wiki_ssh_key ${WIKI_SSH_KEY};
         set $gitea_webhook_secret ${GITEA_WEBHOOK_SECRET};
         perl refresher_nginx::handler;
+    }
+
+    # if we cannot find healthz.txt at the root of the monotome repo, we assume that the clone failed.
+    # this endpoint can then be used by k8s to fail livenessProbe and automatically restart
+    location /healthz {
+        auth_basic off;
+        try_files /healthz.txt =500;
     }
 }
