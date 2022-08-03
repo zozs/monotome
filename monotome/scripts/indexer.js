@@ -3,6 +3,11 @@ window.addEventListener("DOMContentLoaded", function () {
     var keypressed = false
     var index
 
+    document.body.addEventListener("wikilink", function (e) {
+      buffer = e.detail
+      processBuffer()
+    })
+
     document.body.addEventListener("open-index", function (e) {
         index = e.detail
         window.addEventListener("keydown", handleKeypress)
@@ -24,7 +29,7 @@ window.addEventListener("DOMContentLoaded", function () {
     }
 
     function isNavigation (e) {
-        return e.key === "ArrowUp" || e.key === "ArrowDown" || e.key === "PageDown" || e.key === "PageUp"
+        return e.key === "ArrowUp" || e.key === "ArrowDown" || e.key === "PageDown" || e.key === "PageUp" || e.key === "Home" || e.key === "End"
     }
 
     function isFunction (e) {
