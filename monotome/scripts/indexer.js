@@ -88,6 +88,11 @@ window.addEventListener("DOMContentLoaded", function () {
             return
         }
         let previousMatch = false
+        // if actively perform empty search: cycle search queue
+        if (term === "" && searchQueue && searchQueue.length > 0) {
+          processSearchQueue("right")
+          return
+        }
         // process all categories first
         searchQueue = Object.keys(index.subjects).filter(subject => subject.indexOf(term) >= 0 && 
             index.subjects[subject].indexOf("readme.md") >= 0).map(s => s + "/readme.md")
@@ -105,6 +110,11 @@ window.addEventListener("DOMContentLoaded", function () {
                     searchQueue.push(file)
                 }
             }
+        }
+        // if search term causes searchQueue to end up at current page, cycle the search queue by one step instead
+        if (searchQueue && searchQueue.length > 0 && searchQueue[0] === window.location.hash.slice(1)) {
+          processSearchQueue("right")
+          return
         }
         if (searchQueue.length > 0 && !previousMatch) { emit("open-file", { file: searchQueue[0] }) }
     }
